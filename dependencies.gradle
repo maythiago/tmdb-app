@@ -1,0 +1,38 @@
+ext {
+    version = [
+            koin                    : '1.0.2',
+            leakCanary              : '1.6.3',
+            junit                   : '4.12',
+            mockk                   : '1.8.13',
+            gson                    : '2.8.5',
+            rxJavaRetrofit          : '2.5.0',
+            rxAndroid               : '2.1.1',
+            rxJava                  : '2.2.7',
+            retrofit                : '2.5.0',
+            okHttpLoggingInterceptor: '3.13.1'
+    ]
+
+    koin = ["org.koin:koin-android:$version.koin"]
+
+    leakCanaryNoOp = "com.squareup.leakcanary:leakcanary-android-no-op:$version.leakCanary"
+
+    leakCanary = ["com.squareup.leakcanary:leakcanary-android:$version.leakCanary",
+                  "com.squareup.leakcanary:leakcanary-support-fragment:$version.leakCanary"]
+
+    junit = "junit:junit:$version.junit"
+
+    mockk = "io.mockk:mockk:$version.mockk"
+
+    gson = "com.google.code.gson:gson:$version.gson"
+
+    rxJava = [
+            "io.reactivex.rxjava2:rxjava:$version.rxJava",
+            "io.reactivex.rxjava2:rxandroid:$version.rxAndroid",
+            "com.squareup.retrofit2:adapter-rxjava2:$version.rxJavaRetrofit",
+    ]
+    retrofit = [
+            "com.squareup.retrofit2:retrofit:$version.retrofit",
+            "com.squareup.retrofit2:converter-gson:$version.retrofit",
+            "com.squareup.retrofit2:retrofit-mock:$version.retrofit",
+            "com.squareup.okhttp3:logging-interceptor:$version.okHttpLoggingInterceptor"]
+}
