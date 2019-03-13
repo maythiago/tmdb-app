@@ -20,13 +20,13 @@ data class MovieModel(
 ) {
     fun withBaseImageUrl(baseUrl: String): MovieModel {
         val newPosterPath = if (posterPath != null && !posterPath.contains(baseUrl)) {
-            baseUrl + "w342" + posterPath
+            baseUrl + "w500" + posterPath
         } else {
             posterPath
         }
 
         val newBackdropPath = if (backdropPath != null && !backdropPath.contains(baseUrl)) {
-            baseUrl + "w342" + backdropPath
+            baseUrl + "w500" + backdropPath
         } else {
             backdropPath
         }

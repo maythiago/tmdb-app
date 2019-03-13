@@ -1,5 +1,6 @@
 package com.may.tmdb.movie.upcoming
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -41,7 +42,12 @@ class UpcomingMoviesFragment : Fragment(), UpcomingMovies.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rvUpcomingMovies.adapter = mAdapter
-        val columnCount = resources.displayMetrics.widthPixels / 342
+        val orientation = resources.configuration.orientation;
+        val columnCount = if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            4
+        } else {
+            2
+        }
         rvUpcomingMovies.layoutManager = GridLayoutManager(rvUpcomingMovies.context, columnCount)
         Timber.i("onViewCreated")
     }
