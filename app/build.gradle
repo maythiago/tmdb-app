@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply from: '../dependencies.gradle'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 28
@@ -19,13 +20,16 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
-                    'proguard-rules.pro', 'proguard-rules-gson.pro'
+                    'proguard-rules.pro',
+                    'proguard-rules-gson.pro',
+                    'proguard-rules-glide.pro'
         }
     }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation timber
     implementation koin
     implementation gson
     releaseImplementation leakCanaryNoOp
@@ -34,6 +38,9 @@ dependencies {
     testImplementation mockk
     implementation rxJava
     implementation retrofit
+    implementation recyclerView
+    implementation glide
+        kapt glideCompiler
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

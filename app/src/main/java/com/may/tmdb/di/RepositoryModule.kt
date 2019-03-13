@@ -2,10 +2,11 @@ package com.may.tmdb.di
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import com.may.tmdb.repository.SharedPreferenceRepository
 import com.may.tmdb.repository.SharedPreferenceRepositoryImpl
+import com.may.tmdb.repository.network.NetworkRepository
+import com.may.tmdb.repository.network.NetworkRepositoryImpl
+import okhttp3.Cache
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module.module
 
@@ -20,16 +21,15 @@ val sharedPreferenceRepository = module {
 }
 
 val networkRepositoryModule = module {
-    factory {
-        BaseAbstractApplicationModule.providesGsonBuilder()
-    }
-    single<Gson> {
-        get<GsonBuilder>().create()
+    single {
+        val cacheSize = 10L * 1024L * 1024L // 10mb
+        Cache(androidContext().cacheDir, cacheSize)
     }
     single {
         BaseAbstractApplicationModule.provideRetrofitBuilder(get())
     }
     single {
-        single { BaseAbstractApplicationModule.provideRetrofit(get()) }
+        BaseAbstractApplicationModule.provideRetrofit(get(), get())
     }
+    single<NetworkRepository> { NetworkRepositoryImpl(get(), get()) }
 }

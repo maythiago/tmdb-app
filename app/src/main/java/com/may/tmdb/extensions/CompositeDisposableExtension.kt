@@ -1,4 +1,4 @@
-package com.may.tmdb.extension
+package com.may.tmdb.extensions
 
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
