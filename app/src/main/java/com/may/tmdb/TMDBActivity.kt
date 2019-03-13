@@ -2,7 +2,7 @@ package com.may.tmdb
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.may.tmdb.upcoming.UpcomingMoviesFragment
+import com.may.tmdb.movie.upcoming.UpcomingMoviesFragment
 
 class TMDBActivity : AppCompatActivity() {
 
@@ -13,6 +13,7 @@ class TMDBActivity : AppCompatActivity() {
             supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.flCurrentFragment, UpcomingMoviesFragment.newInstance())
+                .commit()
         }
     }
 }
