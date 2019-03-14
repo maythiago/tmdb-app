@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.may.tmdb.R
 import com.may.tmdb.base.BindableViewHolder
 import com.may.tmdb.movie.MovieModel
 import kotlinx.android.synthetic.main.view_holder_upcoming_movies_poster.view.*
@@ -20,6 +21,10 @@ class PosterUpcomingMoviesViewHolder(itemView: View) : BindableViewHolder<MovieM
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .fitCenter()
             .into(poster)
+    }
+
+    override fun clear() {
+
     }
 }
 

@@ -30,6 +30,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation timber
+    implementation pagingComponent
     implementation koin
     implementation gson
     releaseImplementation leakCanaryNoOp
@@ -40,7 +41,7 @@ dependencies {
     implementation retrofit
     implementation recyclerView
     implementation glide
-        kapt glideCompiler
+    kapt glideCompiler
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

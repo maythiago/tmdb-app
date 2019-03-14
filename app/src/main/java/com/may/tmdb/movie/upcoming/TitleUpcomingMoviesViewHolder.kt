@@ -10,7 +10,10 @@ class TitleUpcomingMoviesViewHolder(itemView: View) : BindableViewHolder<MovieMo
 
     override fun bind(movie: MovieModel) {
         title.text = movie.title
+    }
 
+    override fun clear() {
+        title.text = ""
     }
 }
 
