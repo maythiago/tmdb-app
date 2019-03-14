@@ -1,25 +1,24 @@
 package com.may.tmdb.movie.upcoming
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.may.tmdb.R
 import com.may.tmdb.base.BindableViewHolder
 import com.may.tmdb.movie.MovieModel
-import kotlinx.android.synthetic.main.view_holder_upcoming_movies_poster.view.*
+import kotlinx.android.synthetic.main.view_holder_upcoming_movies_grid_view.view.*
 
-class PosterUpcomingMoviesViewHolder(itemView: View) : BindableViewHolder<MovieModel>(itemView) {
-    val poster = itemView.ivUpcomingMoviesPoster
+class GridViewUpcomingMoviesViewHolder(itemView: View) : BindableViewHolder<MovieModel>(itemView) {
+    val poster = itemView.ivGridViewUpcomingMoviesPoster
+    val title = itemView.ivGridViewUpcomingMoviesPosterTitle
 
     override fun bind(item: MovieModel) {
+        title.text = item.title
         Glide.with(itemView.context)
             .load(item.posterPath)
-            .error(ColorDrawable(Color.RED))
-            .placeholder(ColorDrawable(Color.LTGRAY))
+            .error(R.drawable.poster_placeholder)
+            .placeholder(R.drawable.poster_placeholder)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .fitCenter()
             .into(poster)
     }
 
@@ -27,4 +26,3 @@ class PosterUpcomingMoviesViewHolder(itemView: View) : BindableViewHolder<MovieM
 
     }
 }
-

@@ -8,19 +8,17 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
-import com.may.tmdb.configuration.ConfigurationModel
 import com.may.tmdb.movie.MovieModel
 import kotlinx.android.synthetic.main.fragment_upcoming_movies.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 class UpcomingMoviesFragment : Fragment(), UpcomingMovies.View {
-    override fun showNotFoundServiceError() {
-        Toast.makeText(activity, "Ocorreu um erro ao sincronizar os filmes.", Toast.LENGTH_LONG).show()
-    }
-
-    private val mAdapter by lazy { UpcomingMoviesAdapter() }
+    private val singleLine
+        get() = resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+    private val mAdapter by lazy { UpcomingMoviesAdapter(singleLine) }
     private val mPresenter: UpcomingMoviesViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,12 +38,17 @@ class UpcomingMoviesFragment : Fragment(), UpcomingMovies.View {
         })
     }
 
+    override fun showNotFoundServiceError() {
+        Toast.makeText(activity, "Ocorreu um erro ao sincronizar os filmes.", Toast.LENGTH_LONG).show()
+    }
+
     override fun showConfigurationError(message: String) {
         Toast.makeText(activity, message, Toast.LENGTH_LONG).show()
     }
 
     override fun showMovies(results: Array<MovieModel>) {
     }
+
 
     override fun removeAllMovies() {
     }
@@ -55,15 +58,22 @@ class UpcomingMoviesFragment : Fragment(), UpcomingMovies.View {
         return inflater.inflate(com.may.tmdb.R.layout.fragment_upcoming_movies, container, false)
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rvUpcomingMovies.adapter = mAdapter
-        val orientation = resources.configuration.orientation;
-        val columnCount = if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            4
+        val columnCount = if (singleLine) {
+            rvUpcomingMovies.addItemDecoration(
+                DividerItemDecoration(
+                    rvUpcomingMovies.context,
+                    DividerItemDecoration.VERTICAL
+                )
+            )
+            1
         } else {
-            2
+            4
         }
+
         rvUpcomingMovies.layoutManager = GridLayoutManager(rvUpcomingMovies.context, columnCount)
     }
 

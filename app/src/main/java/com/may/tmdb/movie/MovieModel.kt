@@ -20,31 +20,17 @@ data class MovieModel(
 ) {
     fun withBaseImageUrl(baseUrl: String): MovieModel {
         val newPosterPath = if (posterPath != null && !posterPath.contains(baseUrl)) {
-            baseUrl + "w500" + posterPath
+            baseUrl + "w154" + posterPath
         } else {
             posterPath
         }
 
         val newBackdropPath = if (backdropPath != null && !backdropPath.contains(baseUrl)) {
-            baseUrl + "w500" + backdropPath
+            baseUrl + "w154" + backdropPath
         } else {
             backdropPath
         }
-        return MovieModel(
-            newPosterPath,
-            adult,
-            releaseDate,
-            releaseDate,
-            genreId,
-            id,
-            originalTitle,
-            originalLanguage,
-            title,
-            newBackdropPath,
-            popularity,
-            voteCount,
-            video,
-            voteAverage
-        )
+        return MovieModel(newPosterPath, adult, overview, releaseDate, genreId, id, originalTitle, originalLanguage, title,
+            newBackdropPath, popularity, voteCount, video, voteAverage)
     }
 }

@@ -4,40 +4,40 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
 import com.may.tmdb.R
 import com.may.tmdb.base.BindableViewHolder
 import com.may.tmdb.movie.MovieModel
 
-class UpcomingMoviesAdapter : PagedListAdapter<MovieModel, BindableViewHolder<MovieModel>>(DIFF_CALLBACK) {
-    //    private val movies: MutableList<MovieModel> = mutableListOf()
+class UpcomingMoviesAdapter(val singleLine: Boolean) :
+    PagedListAdapter<MovieModel, BindableViewHolder<MovieModel>>(DIFF_CALLBACK) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindableViewHolder<MovieModel> {
-        return if (viewType == WITH_POSTER) {
+        if(viewType == SINGLE_LINE){
             val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.view_holder_upcoming_movies_poster, parent, false)
-            PosterUpcomingMoviesViewHolder(view)
-        } else {
+                .inflate(R.layout.view_holder_upcoming_movies_single_line, parent, false)
+            return SingleLineUpcomingMoviesViewHolder(view)
+        }else{
             val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.view_holder_upcoming_movies_title, parent, false)
-            TitleUpcomingMoviesViewHolder(view)
+                .inflate(R.layout.view_holder_upcoming_movies_grid_view, parent, false)
+            return GridViewUpcomingMoviesViewHolder(view)
+
         }
+
     }
 
     override fun onBindViewHolder(holder: BindableViewHolder<MovieModel>, position: Int) {
         val movie = getItem(position)
-        if(movie == null) {
+        if (movie == null) {
             holder.clear()
-        }else {
+        } else {
             holder.bind(movie)
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        val movie = getItem(position)
-        return if (movie?.posterPath == null) {
-            WITH_TITLE
+        return if (singleLine) {
+            SINGLE_LINE
         } else {
-            WITH_POSTER
+            GRID_VIEW
         }
     }
 
@@ -53,8 +53,8 @@ class UpcomingMoviesAdapter : PagedListAdapter<MovieModel, BindableViewHolder<Mo
 //    }
 
     companion object {
-        const val WITH_POSTER = 0
-        const val WITH_TITLE = 1
+        const val SINGLE_LINE = 0
+        const val GRID_VIEW = 1
         private val DIFF_CALLBACK = object :
             DiffUtil.ItemCallback<MovieModel>() {
             override fun areItemsTheSame(
