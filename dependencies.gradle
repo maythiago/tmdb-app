@@ -12,7 +12,9 @@ ext {
             okHttpLoggingInterceptor: '3.12.0',
             glide                   : '4.9.0',
             timber                  : '4.7.1',
-            pagingComponent         : '2.1.0'
+            pagingComponent         : '2.1.0',
+            fragment                : '1.0.0',
+            design                  : '1.0.0'
 
     ]
 
@@ -44,6 +46,10 @@ ext {
     glideRecyclerView = "com.github.bumptech.glide:recyclerview-integration:$version.glide"
     glideCompiler = "com.github.bumptech.glide:glide:$version.glide"
     timber = "com.jakewharton.timber:timber:$version.timber"
-    pagingComponent = "androidx.paging:paging-runtime:$version.pagingComponent"
-
+    pagingComponent = ["androidx.paging:paging-runtime:$version.pagingComponent",
+                       "androidx.paging:paging-rxjava2:$version.pagingComponent"
+    ]
+    pagingTest = "androidx.paging:paging-common:$version.pagingComponent"
+    design = "com.google.android.material:material:$version.design"
+    fragment = "androidx.fragment:fragment:$version.fragment"
 }

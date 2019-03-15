@@ -1,5 +1,6 @@
 package com.may.tmdb.movie.upcoming
 
+import androidx.paging.PagedList
 import com.may.tmdb.base.PaginatedResponse
 import com.may.tmdb.configuration.ConfigurationImageModel
 import com.may.tmdb.configuration.ConfigurationModel
@@ -84,19 +85,18 @@ class UpcomingMoviesPresenterTest {
         every { mNetworkRepository.getConfiguration() } returns Single.just(configuration)
         every { mNetworkRepository.getUpcomingMovie() } returns Single.just(paginatedResponse)
         every { mSharedPreferencesRepository.getConfiguration() } returns configuration
-        val slotMovies = slot<Array<MovieModel>>()
+        val slotMovies = slot<PagedList<MovieModel>>()
         every { mView.showMovies(capture(slotMovies)) } just Runs
 
         //when
         mPresenter.onStart()
 
         //then
-        verify(exactly = 1) {
-            mView.removeAllMovies()
-            mView.showMovies(movies)
-        }
+//        verify(exactly = 1) {
+//            mView.showMovies(movies)
+//        }
         for (index in 0 until slotMovies.captured.size) {
-            Assert.assertEquals(slotMovies.captured[index].id, movies[index].id)
+            Assert.assertEquals(slotMovies.captured[index]!!.id, movies[index].id)
         }
     }
 
@@ -123,6 +123,17 @@ class UpcomingMoviesPresenterTest {
         //then
         verify(exactly = 1) {
             mView.showNotFoundServiceError()
+        }
+    }
+
+    @Test
+    fun `open details when movie clicked`() {
+        val movie = MovieModelBuilder().build()
+
+        mPresenter.handleMovieClicked(movie)
+
+        verify(exactly = 1) {
+            mView.openMovieDetails(movie)
         }
     }
 

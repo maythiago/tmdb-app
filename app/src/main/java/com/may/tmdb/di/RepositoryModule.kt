@@ -31,5 +31,5 @@ val networkRepositoryModule = module {
     single {
         BaseAbstractApplicationModule.provideRetrofit(get(), get())
     }
-    single<NetworkRepository> { NetworkRepositoryImpl(get(), get()) }
+    single<NetworkRepository> { NetworkRepositoryImpl(get()) }
 }

@@ -10,16 +10,26 @@ import com.may.tmdb.movie.MovieModel
 
 class UpcomingMoviesAdapter(val singleLine: Boolean) :
     PagedListAdapter<MovieModel, BindableViewHolder<MovieModel>>(DIFF_CALLBACK) {
+    private var onClickListener: ((MovieModel) -> Unit)? = null
+    fun setOnClickListener(listener: ((MovieModel) -> Unit)){
+        onClickListener = listener
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindableViewHolder<MovieModel> {
-        if(viewType == SINGLE_LINE){
+        val viewHolderClickListener = { position: Int ->
+            val movie = getItem(position)
+            if (movie != null) {
+                onClickListener?.invoke(movie)
+            }
+
+        }
+        if (viewType == SINGLE_LINE) {
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.view_holder_upcoming_movies_single_line, parent, false)
-            return SingleLineUpcomingMoviesViewHolder(view)
-        }else{
+            return SingleLineUpcomingMoviesViewHolder(view, viewHolderClickListener)
+        } else {
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.view_holder_upcoming_movies_grid_view, parent, false)
-            return GridViewUpcomingMoviesViewHolder(view)
-
+            return GridViewUpcomingMoviesViewHolder(view, viewHolderClickListener)
         }
 
     }
@@ -41,16 +51,6 @@ class UpcomingMoviesAdapter(val singleLine: Boolean) :
         }
     }
 
-//    fun addMovies(movies: Array<MovieModel>) {
-//        val newFirstPosition = itemCount + 1
-//        this.movies.addAll(movies)
-//        notifyItemRangeInserted(newFirstPosition, itemCount)
-//    }
-
-//    fun clear() {
-//        val lastItem = itemCount
-//        notifyItemRangeRemoved(0, lastItem)
-//    }
 
     companion object {
         const val SINGLE_LINE = 0

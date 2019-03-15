@@ -1,31 +1,16 @@
-package com.may.tmdb
+package com.may.tmdb.movie.upcoming.paging
 
-import androidx.paging.DataSource
-import androidx.paging.ItemKeyedDataSource
 import androidx.paging.PageKeyedDataSource
-import androidx.paging.PositionalDataSource
 import com.may.tmdb.configuration.ConfigurationModel
-import com.may.tmdb.di.networkRepositoryModule
 import com.may.tmdb.movie.MovieModel
-import com.may.tmdb.repository.SharedPreferenceRepository
 import com.may.tmdb.repository.network.NetworkRepository
 import timber.log.Timber
-
-class MovieModelDataSourceFactory(val repository: NetworkRepository, val configuration: ConfigurationModel) :
-    DataSource.Factory<Int, MovieModel>() {
-    override fun create(): DataSource<Int, MovieModel> {
-        val source = PageKeyedMovieDataSource(repository, configuration)
-        return source
-    }
-
-
-}
 
 class PageKeyedMovieDataSource(val repository: NetworkRepository, val configuration: ConfigurationModel) :
     PageKeyedDataSource<Int, MovieModel>() {
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, MovieModel>) {
         repository
-            .getUpcomingMovie()
+            .getUpcomingMovie(1)
             .subscribe(
                 { response ->
                     var movies = response
@@ -46,21 +31,21 @@ class PageKeyedMovieDataSource(val repository: NetworkRepository, val configurat
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, MovieModel>) {
         Timber.i("key=${params.key} requestedLoadSize=${params.requestedLoadSize}")
         val currentPage = params.key
-        val nextPosition = if (currentPage < params.requestedLoadSize) {
+        val nextPosition = if (currentPage <= params.requestedLoadSize) {
             currentPage + 1
         } else {
             null
         }
-        fetchData(callback, nextPosition)
+
+        fetchData(callback, currentPage, currentPage + 1)
 
     }
 
     private fun fetchData(
-        callback: LoadCallback<Int, MovieModel>,
-        nextPosition: Int?
+        callback: LoadCallback<Int, MovieModel>, currentPage: Int, nextPosition: Int?
     ) {
         repository
-            .getUpcomingMovie(nextPosition)
+            .getUpcomingMovie(currentPage)
             .subscribe(
                 { response ->
 
@@ -81,12 +66,12 @@ class PageKeyedMovieDataSource(val repository: NetworkRepository, val configurat
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, MovieModel>) {
         Timber.i("key=${params.key} requestedLoadSize=${params.requestedLoadSize}")
         val currentPage = params.key
-        val nextPosition = if (currentPage > params.requestedLoadSize) {
+        val nextPosition = if (currentPage >= params.requestedLoadSize) {
             currentPage - 1
         } else {
             null
         }
-        fetchData(callback, nextPosition)
+        fetchData(callback, currentPage, currentPage - 1)
     }
 
 }

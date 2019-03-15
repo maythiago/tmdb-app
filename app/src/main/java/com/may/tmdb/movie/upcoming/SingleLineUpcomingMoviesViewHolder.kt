@@ -8,7 +8,16 @@ import com.may.tmdb.base.BindableViewHolder
 import com.may.tmdb.movie.MovieModel
 import kotlinx.android.synthetic.main.view_holder_upcoming_movies_single_line.view.*
 
-class SingleLineUpcomingMoviesViewHolder(itemView: View) : BindableViewHolder<MovieModel>(itemView) {
+class SingleLineUpcomingMoviesViewHolder(
+    itemView: View,
+    viewHolderClickListener: (Int) -> Unit
+) : BindableViewHolder<MovieModel>(itemView) {
+    init {
+        itemView.setOnClickListener {
+            viewHolderClickListener.invoke(adapterPosition)
+        }
+    }
+
     val poster = itemView.ivUpcomingMoviesPoster
     val title = itemView.ivUpcomingMoviesPosterTitle
     val overview = itemView.ivUpcomingMoviesPosterOverview
@@ -16,12 +25,7 @@ class SingleLineUpcomingMoviesViewHolder(itemView: View) : BindableViewHolder<Mo
     override fun bind(item: MovieModel) {
         title.text = item.title
         overview.text = item.overview
-        Glide.with(itemView.context)
-            .load(item.posterPath)
-            .error(R.drawable.poster_placeholder)
-            .placeholder(R.drawable.poster_placeholder)
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .into(poster)
+        PosterProvider.load(itemView.context, item.posterPath, poster)
     }
 
     override fun clear() {

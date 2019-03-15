@@ -1,7 +1,7 @@
 package com.may.tmdb.movie.upcoming
 
-import com.may.tmdb.MovieModelDataSourceFactory
 import com.may.tmdb.extensions.CompositeDisposableExtension.plusAssign
+import com.may.tmdb.movie.MovieModel
 import com.may.tmdb.repository.network.NetworkRepository
 import com.may.tmdb.repository.SharedPreferenceRepository
 import io.reactivex.disposables.CompositeDisposable
@@ -11,7 +11,9 @@ class UpcomingMoviesPresenter(
     val mSharedPreferenceRepository: SharedPreferenceRepository,
     val mNetworkRepository: NetworkRepository
 ) : UpcomingMovies.Presenter {
+    private var mView: UpcomingMovies.View? = null
     private val mCompositeDisposable = CompositeDisposable()
+
     override fun onStart() {
         val cachedConfiguration = mSharedPreferenceRepository.getConfiguration()
         if (cachedConfiguration == null) {
@@ -29,21 +31,10 @@ class UpcomingMoviesPresenter(
     }
 
     private fun getUpcomingMovies() {
-        mCompositeDisposable += mNetworkRepository
-            .getUpcomingMovie()
+        val configuration = mSharedPreferenceRepository.getConfiguration()
+        mCompositeDisposable += mNetworkRepository.getPagingUpcomingMovie(configuration!!)
             .subscribe({ result ->
-                val configuration = mSharedPreferenceRepository.getConfiguration()
-                val moviesWithConfiguration = result
-                    .results
-                    .map {
-                        it.withBaseImageUrl(
-                            configuration!!
-                                .images
-                                .baseUrl
-                        )
-                    }.toTypedArray()
-                mView?.removeAllMovies()
-                mView?.showMovies(moviesWithConfiguration)
+                mView?.showMovies(result)
             }, { e ->
                 if (e is HttpException && e.code() == 404) {
                     mView?.showNotFoundServiceError()
@@ -53,7 +44,10 @@ class UpcomingMoviesPresenter(
             })
     }
 
-    private var mView: UpcomingMovies.View? = null
+    override fun handleMovieClicked(movie: MovieModel) {
+        mView?.openMovieDetails(movie)
+    }
+
     override fun subscribe(view: UpcomingMovies.View) {
         mView = view
     }
