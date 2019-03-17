@@ -1,12 +1,13 @@
-package com.may.tmdb
+package com.may.tmdb.movie.upcoming.detail
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.may.tmdb.R
 import com.may.tmdb.movie.MovieModel
-import com.may.tmdb.movie.upcoming.detail.MovieDetailsFragment
 
 class DetailActivity : AppCompatActivity() {
 
@@ -17,6 +18,7 @@ class DetailActivity : AppCompatActivity() {
             val movie = intent.extras.getParcelable<MovieModel>(EXTRA_MOVIE_DETAIL)
             goToFragment(MovieDetailsFragment.newInstance(movie))
         }
+        supportActionBar
     }
 
     fun goToFragment(fragment: Fragment) {
@@ -24,6 +26,19 @@ class DetailActivity : AppCompatActivity() {
             .beginTransaction()
             .replace(R.id.flCurrentFragment, fragment)
             .commit()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        supportFinishAfterTransition()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.getItemId() == android.R.id.home) {
+            supportFinishAfterTransition();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     companion object {

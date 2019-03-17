@@ -9,7 +9,13 @@ MovieDetailsPresenter : MovieDetails.Presenter {
     var mView: MovieDetails.View? = null
     val compositeDisposable = CompositeDisposable()
     override fun onStart(movie: MovieModel) {
-        mView?.setPoster(movie.largePosterPath)
+        mView?.setTitle(movie.title)
+        if(!movie.largeBackdropPath.isNullOrBlank()){
+            mView?.setBackdrop(movie.largeBackdropPath!!)
+        }
+        if(!movie.thumbnailPosterPath.isNullOrBlank()){
+            mView?.setPoster(movie.thumbnailPosterPath!!)
+        }
     }
 
     override fun subscribe(view: MovieDetails.View) {

@@ -19,9 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".DetailActivity"
+        <activity android:name=".movie.upcoming.detail.DetailActivity"
                   android:parentActivityName=".UpcomingMovieActivity"
-                  android:theme="@style/Theme.Design.NoActionBar"/>
+        android:theme="@style/AppTheme.DetailsActivity"/>
 
         />
     </application>

@@ -40,7 +40,6 @@ class UpcomingMoviesFragment : Fragment(), UpcomingMovies.View {
         mAdapter.submitList(results)
     }
 
-
     override fun removeAllMovies() {
     }
 
@@ -53,7 +52,7 @@ class UpcomingMoviesFragment : Fragment(), UpcomingMovies.View {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(com.may.tmdb.R.layout.fragment_upcoming_movies, container, false)
+        return inflater.inflate(R.layout.fragment_upcoming_movies, container, false)
     }
 
 
@@ -63,10 +62,6 @@ class UpcomingMoviesFragment : Fragment(), UpcomingMovies.View {
         rvUpcomingMovies.adapter = mAdapter
         mAdapter.setOnClickListener { position, movie ->
             mPresenter.handleMovieClicked(position, movie)
-        }
-        if (savedInstanceState != null && savedInstanceState.containsKey("terstefdagsd")) {
-            var parcelable = savedInstanceState.getParcelable<Parcelable>("terstefdagsd")
-            rvUpcomingMovies.layoutManager?.onRestoreInstanceState(parcelable)
         }
         val layoutManager = if (singleLine) {
             rvUpcomingMovies.addItemDecoration(

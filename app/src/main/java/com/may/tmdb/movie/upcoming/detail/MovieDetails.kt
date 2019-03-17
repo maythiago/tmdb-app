@@ -4,8 +4,9 @@ import com.may.tmdb.movie.MovieModel
 
 object MovieDetails {
     interface View {
-        fun setPoster(posterPath: String?)
-
+        fun setPoster(posterPath: String)
+        fun setTitle(title: String)
+        fun setBackdrop(thumbnailBackdropPath: String)
     }
 
     interface Presenter {
