@@ -32,20 +32,22 @@ class UpcomingMoviesPresenter(
 
     private fun getUpcomingMovies() {
         val configuration = mSharedPreferenceRepository.getConfiguration()
-        mCompositeDisposable += mNetworkRepository.getPagingUpcomingMovie(configuration!!)
-            .subscribe({ result ->
-                mView?.showMovies(result)
-            }, { e ->
-                if (e is HttpException && e.code() == 404) {
-                    mView?.showNotFoundServiceError()
-                } else {
-                    mView?.showConfigurationError(e.message ?: "Ocorreu um erro inesperado")
-                }
-            })
+        if (configuration != null) {
+            mCompositeDisposable += mNetworkRepository.getPagingUpcomingMovie(configuration)
+                .subscribe({ result ->
+                    mView?.showMovies(result)
+                }, { e ->
+                    if (e is HttpException && e.code() == 404) {
+                        mView?.showNotFoundServiceError()
+                    } else {
+                        mView?.showConfigurationError(e.message ?: "Ocorreu um erro inesperado")
+                    }
+                })
+        }
     }
 
-    override fun handleMovieClicked(movie: MovieModel) {
-        mView?.openMovieDetails(movie)
+    override fun handleMovieClicked(position: Int, movie: MovieModel) {
+        mView?.openMovieDetails(position, movie)
     }
 
     override fun subscribe(view: UpcomingMovies.View) {

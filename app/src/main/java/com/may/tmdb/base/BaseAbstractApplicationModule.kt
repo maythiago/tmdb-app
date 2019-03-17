@@ -1,4 +1,4 @@
-package com.may.tmdb.di
+package com.may.tmdb.base
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder

@@ -16,11 +16,7 @@ class PageKeyedMovieDataSource(val repository: NetworkRepository, val configurat
                     var movies = response
                         .results
                         .map {
-                            it.withBaseImageUrl(
-                                configuration!!
-                                    .images
-                                    .baseUrl
-                            )
+                            it.withConfiguration(configuration!!.images)
                         }
                     callback.onResult(movies, null, 2)
                 },
@@ -52,11 +48,7 @@ class PageKeyedMovieDataSource(val repository: NetworkRepository, val configurat
                     var movies = response
                         .results
                         .map {
-                            it.withBaseImageUrl(
-                                configuration!!
-                                    .images
-                                    .baseUrl
-                            )
+                            it.withConfiguration(configuration!!.images)
                         }
                     callback.onResult(movies, nextPosition)
                 },

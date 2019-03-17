@@ -2,22 +2,24 @@ package com.may.tmdb.movie.upcoming
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
-import com.may.tmdb.TMDBActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.may.tmdb.R
+import com.may.tmdb.UpcomingMovieActivity
 import com.may.tmdb.movie.MovieModel
-import com.may.tmdb.movie.upcoming.detail.MovieDetailsFragment
 import kotlinx.android.synthetic.main.fragment_upcoming_movies.*
 import org.koin.android.ext.android.inject
-import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
+
 
 class UpcomingMoviesFragment : Fragment(), UpcomingMovies.View {
     private val singleLine
@@ -42,51 +44,56 @@ class UpcomingMoviesFragment : Fragment(), UpcomingMovies.View {
     override fun removeAllMovies() {
     }
 
-    override fun openMovieDetails(movie: MovieModel) {
-        val fragment = MovieDetailsFragment.newInstance(movie)
-        val tmdbActivity = activity as TMDBActivity
-        tmdbActivity.goToFragment(fragment)
+    override fun openMovieDetails(position: Int, movie: MovieModel) {
+        val tmdbActivity = activity as UpcomingMovieActivity
+        val layoutManager = rvUpcomingMovies.layoutManager
+        val clickedView = layoutManager!!.findViewByPosition(position)!!
+        val imageView = clickedView.findViewById<ImageView>(R.id.ivUpcomingMoviesPoster)
+        tmdbActivity.goToDetailsFragment(movie, imageView)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        Timber.i("onCreateView $savedInstanceState")
         return inflater.inflate(com.may.tmdb.R.layout.fragment_upcoming_movies, container, false)
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Timber.i("onViewCreated")
         rvUpcomingMovies.adapter = mAdapter
-        mAdapter.setOnClickListener { mPresenter.handleMovieClicked(it) }
-        val columnCount = if (singleLine) {
+        mAdapter.setOnClickListener { position, movie ->
+            mPresenter.handleMovieClicked(position, movie)
+        }
+        if (savedInstanceState != null && savedInstanceState.containsKey("terstefdagsd")) {
+            var parcelable = savedInstanceState.getParcelable<Parcelable>("terstefdagsd")
+            rvUpcomingMovies.layoutManager?.onRestoreInstanceState(parcelable)
+        }
+        val layoutManager = if (singleLine) {
             rvUpcomingMovies.addItemDecoration(
                 DividerItemDecoration(
                     rvUpcomingMovies.context,
                     DividerItemDecoration.VERTICAL
                 )
             )
-            1
+            LinearLayoutManager(rvUpcomingMovies.context)
         } else {
-            4
+            GridLayoutManager(rvUpcomingMovies.context, 4)
         }
-        rvUpcomingMovies.layoutManager = GridLayoutManager(rvUpcomingMovies.context, columnCount)
-    }
-
-    override fun onStart() {
-        super.onStart()
+        rvUpcomingMovies.layoutManager = layoutManager
         mPresenter.subscribe(this)
         mPresenter.onStart()
     }
 
-    override fun onStop() {
+    override fun onDestroyView() {
         mPresenter.unsubscribe()
-        super.onStop()
+        super.onDestroyView()
     }
 
     companion object {
         @JvmStatic
         fun newInstance() =
             UpcomingMoviesFragment()
+
     }
 }
 

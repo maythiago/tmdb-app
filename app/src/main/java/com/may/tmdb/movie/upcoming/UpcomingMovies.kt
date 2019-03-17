@@ -9,14 +9,14 @@ object UpcomingMovies {
         fun showMovies(results: PagedList<MovieModel>)
         fun removeAllMovies()
         fun showNotFoundServiceError()
-        fun openMovieDetails(movie: MovieModel)
+        fun openMovieDetails(position: Int, movie: MovieModel)
     }
 
     interface Presenter {
         fun subscribe(view: UpcomingMovies.View)
         fun unsubscribe()
         fun onStart()
-        fun handleMovieClicked(movie: MovieModel)
+        fun handleMovieClicked(position: Int, movie: MovieModel)
     }
 
 }

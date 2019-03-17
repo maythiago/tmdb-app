@@ -2,10 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical"
               android:layout_width="match_parent"
+              android:id="@+id/gridUpcomingMoviesDetailItem"
               android:layout_margin="12dp"
               android:layout_height="wrap_content">
     <ImageView
-            android:id="@+id/ivGridViewUpcomingMoviesPoster"
+            android:id="@+id/ivUpcomingMoviesPoster"
             android:layout_width="match_parent"
             tools:src="@mipmap/ic_launcher"
             android:adjustViewBounds="true"

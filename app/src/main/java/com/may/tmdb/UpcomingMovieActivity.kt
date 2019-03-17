@@ -1,11 +1,15 @@
 package com.may.tmdb
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.may.tmdb.movie.MovieModel
 import com.may.tmdb.movie.upcoming.UpcomingMoviesFragment
+import androidx.core.app.ActivityOptionsCompat
 
-class TMDBActivity : AppCompatActivity() {
+
+class UpcomingMovieActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,5 +23,16 @@ class TMDBActivity : AppCompatActivity() {
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.flCurrentFragment, fragment)
-            .commit()    }
+            .commit()
+    }
+
+    fun goToDetailsFragment(movie: MovieModel, viewClicked:View) {
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+            this,
+            viewClicked,
+            "moviePoster"
+        )
+        startActivity(DetailActivity.startIntent(this, movie), options.toBundle())
+    }
 }
+

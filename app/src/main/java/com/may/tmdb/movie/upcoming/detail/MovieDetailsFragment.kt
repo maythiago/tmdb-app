@@ -1,5 +1,6 @@
 package com.may.tmdb.movie.upcoming.detail
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import com.may.tmdb.R
 import com.may.tmdb.movie.MovieModel
 import com.may.tmdb.movie.upcoming.PosterProvider
 import kotlinx.android.synthetic.main.fragment_movie_detail.*
+import kotlinx.android.synthetic.main.fragment_movie_detail.view.*
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 import java.security.InvalidParameterException
@@ -22,7 +24,12 @@ class MovieDetailsFragment : Fragment(), MovieDetails.View {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         Timber.i("onCreateView $savedInstanceState")
-        return inflater.inflate(R.layout.fragment_movie_detail, container, false)
+        var view = inflater.inflate(R.layout.fragment_movie_detail, container, false)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            view.ivMovieDetailPoster.setTransitionName("moviePoster");
+        }
+
+        return view
     }
 
     override fun onStart() {

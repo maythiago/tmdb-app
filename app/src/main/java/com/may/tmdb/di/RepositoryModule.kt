@@ -2,6 +2,7 @@ package com.may.tmdb.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.may.tmdb.base.BaseAbstractApplicationModule
 import com.may.tmdb.repository.SharedPreferenceRepository
 import com.may.tmdb.repository.SharedPreferenceRepositoryImpl
 import com.may.tmdb.repository.network.NetworkRepository

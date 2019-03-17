@@ -10,17 +10,17 @@ import com.may.tmdb.movie.MovieModel
 
 class UpcomingMoviesAdapter(val singleLine: Boolean) :
     PagedListAdapter<MovieModel, BindableViewHolder<MovieModel>>(DIFF_CALLBACK) {
-    private var onClickListener: ((MovieModel) -> Unit)? = null
-    fun setOnClickListener(listener: ((MovieModel) -> Unit)){
+    private var onClickListener: ((Int, MovieModel) -> Unit)? = null
+    fun setOnClickListener(listener: ((Int, MovieModel) -> Unit)) {
         onClickListener = listener
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindableViewHolder<MovieModel> {
-        val viewHolderClickListener = { position: Int ->
+        val viewHolderClickListener: (Int) -> Unit = { position: Int ->
             val movie = getItem(position)
             if (movie != null) {
-                onClickListener?.invoke(movie)
+                onClickListener?.invoke(position, movie)
             }
-
         }
         if (viewType == SINGLE_LINE) {
             val view = LayoutInflater.from(parent.context)
@@ -31,7 +31,6 @@ class UpcomingMoviesAdapter(val singleLine: Boolean) :
                 .inflate(R.layout.view_holder_upcoming_movies_grid_view, parent, false)
             return GridViewUpcomingMoviesViewHolder(view, viewHolderClickListener)
         }
-
     }
 
     override fun onBindViewHolder(holder: BindableViewHolder<MovieModel>, position: Int) {

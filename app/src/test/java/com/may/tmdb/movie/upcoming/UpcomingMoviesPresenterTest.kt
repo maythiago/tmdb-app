@@ -1,21 +1,20 @@
 package com.may.tmdb.movie.upcoming
 
 import androidx.paging.PagedList
+import androidx.paging.RxPagedListBuilder
 import com.may.tmdb.base.PaginatedResponse
 import com.may.tmdb.configuration.ConfigurationImageModel
 import com.may.tmdb.configuration.ConfigurationModel
+import com.may.tmdb.mock.MockDataSourceFactory
 import com.may.tmdb.movie.MovieModel
 import com.may.tmdb.repository.network.NetworkRepository
 import com.may.tmdb.repository.SharedPreferenceRepository
 import io.mockk.*
+import io.reactivex.Observable
 import io.reactivex.Single
-import okhttp3.ResponseBody
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import retrofit2.HttpException
-import retrofit2.Response
-import retrofit2.mock.MockRetrofit
 
 class UpcomingMoviesPresenterTest {
 
@@ -40,9 +39,6 @@ class UpcomingMoviesPresenterTest {
         val configuration = ConfigurationModel(imageConfiguration)
         every { mNetworkRepository.getConfiguration() } returns Single.just(configuration)
         every { mSharedPreferencesRepository.getConfiguration() } returns null
-        // TODO Quebrar verificação de configuração para outra classe para evitar isso
-        val paginatedResponse = PaginatedResponse(1, arrayOf<MovieModel>(), 3, 3)
-        every { mNetworkRepository.getUpcomingMovie() } returns Single.just(paginatedResponse)
 
         //when
         mPresenter.onStart()
@@ -60,9 +56,7 @@ class UpcomingMoviesPresenterTest {
         val configuration = ConfigurationModel(imageConfiguration)
         every { mNetworkRepository.getConfiguration() } returns Single.just(configuration)
         every { mSharedPreferencesRepository.getConfiguration() } returns configuration
-        // TODO Quebrar verificação de configuração para outra classe para evitar isso
-        val paginatedResponse = PaginatedResponse(1, arrayOf<MovieModel>(), 3, 3)
-        every { mNetworkRepository.getUpcomingMovie() } returns Single.just(paginatedResponse)
+
         //when
         mPresenter.onStart()
 
@@ -80,10 +74,14 @@ class UpcomingMoviesPresenterTest {
         val movie1 = MovieModelBuilder().build()
         val movie2 = MovieModelBuilder().build()
         val movie3 = MovieModelBuilder().build()
-        val movies = arrayOf(movie1, movie2, movie3)
-        val paginatedResponse = PaginatedResponse(1, movies, 3, 3)
+        val movies = mutableListOf(movie1, movie2, movie3)
+        val paginatedResponse = MockDataSourceFactory(movies)
+        val observable = RxPagedListBuilder(paginatedResponse, 15)
+            .buildObservable()
+            .blockingFirst()
         every { mNetworkRepository.getConfiguration() } returns Single.just(configuration)
-        every { mNetworkRepository.getUpcomingMovie() } returns Single.just(paginatedResponse)
+        every { mNetworkRepository.getPagingUpcomingMovie(configuration) } returns Observable.just(observable)
+
         every { mSharedPreferencesRepository.getConfiguration() } returns configuration
         val slotMovies = slot<PagedList<MovieModel>>()
         every { mView.showMovies(capture(slotMovies)) } just Runs
@@ -92,9 +90,9 @@ class UpcomingMoviesPresenterTest {
         mPresenter.onStart()
 
         //then
-//        verify(exactly = 1) {
-//            mView.showMovies(movies)
-//        }
+        verify(exactly = 1) {
+            mView.showMovies(observable)
+        }
         for (index in 0 until slotMovies.captured.size) {
             Assert.assertEquals(slotMovies.captured[index]!!.id, movies[index].id)
         }
@@ -130,10 +128,11 @@ class UpcomingMoviesPresenterTest {
     fun `open details when movie clicked`() {
         val movie = MovieModelBuilder().build()
 
-        mPresenter.handleMovieClicked(movie)
+        val position = 2
+        mPresenter.handleMovieClicked(position, movie)
 
         verify(exactly = 1) {
-            mView.openMovieDetails(movie)
+            mView.openMovieDetails(position, movie)
         }
     }
 

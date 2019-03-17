@@ -2,7 +2,9 @@ package com.may.tmdb.movie
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.versionedparcelable.VersionedParcelize
 import com.google.gson.annotations.SerializedName
+import com.may.tmdb.configuration.ConfigurationImageModel
 
 data class MovieModel(
     @SerializedName("poster_path") val posterPath: String?,
@@ -18,8 +20,11 @@ data class MovieModel(
     @SerializedName("popularity") val popularity: Double,
     @SerializedName("vote_count") val voteCount: Int,
     @SerializedName("video") val video: Boolean,
-    @SerializedName("vote_average") val voteAverage: Double
+    @SerializedName("vote_average") val voteAverage: Double,
+    var largePosterPath: String? = "",
+    var thumbnailPosterPath: String? = ""
 ) : Parcelable {
+
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readByte() != 0.toByte(),
@@ -34,24 +39,21 @@ data class MovieModel(
         parcel.readDouble(),
         parcel.readInt(),
         parcel.readByte() != 0.toByte(),
-        parcel.readDouble()
+        parcel.readDouble(),
+        parcel.readString(),
+        parcel.readString()
     ) {
     }
 
-    fun withBaseImageUrl(baseUrl: String): MovieModel {
-        val newPosterPath = if (posterPath != null && !posterPath.contains(baseUrl)) {
-            baseUrl + "w154" + posterPath
-        } else {
-            posterPath
+    fun withConfiguration(configuration: ConfigurationImageModel): MovieModel {
+        if (posterPath != null && !posterPath.contains(configuration.baseUrl)) {
+            // everything enclosed of 'wXXX'
+            thumbnailPosterPath =
+                configuration.baseUrl + configuration.posterSizes.first { it.contains("^(w\\d{3})$".toRegex()) } + posterPath
+            largePosterPath =
+                configuration.baseUrl + configuration.posterSizes.last { it.contains("^(w\\d{3})$".toRegex()) } + posterPath
         }
-
-        val newBackdropPath = if (backdropPath != null && !backdropPath.contains(baseUrl)) {
-            baseUrl + "w154" + backdropPath
-        } else {
-            backdropPath
-        }
-        return MovieModel(newPosterPath, adult, overview, releaseDate, genreId, id, originalTitle, originalLanguage, title,
-            newBackdropPath, popularity, voteCount, video, voteAverage)
+        return this
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -69,6 +71,8 @@ data class MovieModel(
         parcel.writeInt(voteCount)
         parcel.writeByte(if (video) 1 else 0)
         parcel.writeDouble(voteAverage)
+        parcel.writeString(largePosterPath)
+        parcel.writeString(thumbnailPosterPath)
     }
 
     override fun describeContents(): Int {
@@ -84,4 +88,5 @@ data class MovieModel(
             return arrayOfNulls(size)
         }
     }
+
 }

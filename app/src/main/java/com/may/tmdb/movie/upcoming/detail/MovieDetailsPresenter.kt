@@ -1,4 +1,4 @@
-package com.may.tmdb.di
+package com.may.tmdb.movie.upcoming.detail
 
 import com.may.tmdb.movie.MovieModel
 import com.may.tmdb.movie.upcoming.detail.MovieDetails
@@ -9,7 +9,7 @@ MovieDetailsPresenter : MovieDetails.Presenter {
     var mView: MovieDetails.View? = null
     val compositeDisposable = CompositeDisposable()
     override fun onStart(movie: MovieModel) {
-        mView?.setPoster(movie.posterPath)
+        mView?.setPoster(movie.largePosterPath)
     }
 
     override fun subscribe(view: MovieDetails.View) {
