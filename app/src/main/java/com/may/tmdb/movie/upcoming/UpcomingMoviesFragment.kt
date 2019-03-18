@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.*
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
@@ -40,7 +41,12 @@ class UpcomingMoviesFragment : Fragment(), UpcomingMovies.View {
         mAdapter.submitList(results)
     }
 
-    override fun removeAllMovies() {
+    override fun showProgress() {
+        pbUpcomingMoviesLoading.visibility = VISIBLE
+    }
+
+    override fun hideProgress() {
+        pbUpcomingMoviesLoading.visibility = INVISIBLE
     }
 
     override fun openMovieDetails(position: Int, movie: MovieModel) {

@@ -4,19 +4,24 @@ import com.may.tmdb.movie.MovieModel
 
 class MovieModelBuilder {
     private var posterPath: String? = null
-    private var largePosterPath: String? = null
+    private var mLargePosterPath: String? = null
     private var mThumbnailPosterPath: String? = null
-    private val releaseDate = ""
+    private var mReleaseDate = ""
     private val id = System.currentTimeMillis().toInt()
     private var mTitle = ""
-    private val mBackdropPath: String? = null
-
-    private var mLargeBackdropPath: String? = null
+    private var mGenres = intArrayOf()
+    private var mOverview = ""
 
     fun build(): MovieModel {
         return MovieModel(
-            posterPath, releaseDate, id, mTitle, mBackdropPath, largePosterPath,
-            mThumbnailPosterPath, mLargeBackdropPath
+            posterPath,
+            mReleaseDate,
+            id,
+            mTitle,
+            mOverview,
+            mGenres,
+            mLargePosterPath,
+            mThumbnailPosterPath
         )
     }
 
@@ -30,9 +35,18 @@ class MovieModelBuilder {
         return this
     }
 
-    fun backdropUrl(backdrop: String): MovieModelBuilder {
-        mLargeBackdropPath = backdrop
+    fun releaseDate(releaseDate: String): MovieModelBuilder {
+        mReleaseDate = releaseDate
         return this
     }
 
+    fun genreIds(genresId: IntArray): MovieModelBuilder {
+        mGenres = genresId
+        return this
+    }
+
+    fun overview(overview: String): MovieModelBuilder {
+        mOverview = overview
+        return this
+    }
 }

@@ -7,9 +7,10 @@ object UpcomingMovies {
     interface View {
         fun showConfigurationError(message: String)
         fun showMovies(results: PagedList<MovieModel>)
-        fun removeAllMovies()
         fun showNotFoundServiceError()
         fun openMovieDetails(position: Int, movie: MovieModel)
+        fun showProgress()
+        fun hideProgress()
     }
 
     interface Presenter {

@@ -19,6 +19,8 @@ class UpcomingMoviesPresenter(
         if (cachedConfiguration == null) {
             mCompositeDisposable += mNetworkRepository
                 .getConfiguration()
+                .doOnSubscribe { mView?.showProgress() }
+                .doOnTerminate { mView?.hideProgress() }
                 .subscribe({ configuration ->
                     mSharedPreferenceRepository.setConfiguration(configuration)
                     getUpcomingMovies()

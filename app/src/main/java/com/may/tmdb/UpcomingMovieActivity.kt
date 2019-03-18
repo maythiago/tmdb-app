@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 import com.may.tmdb.movie.MovieModel
 import com.may.tmdb.movie.upcoming.UpcomingMoviesFragment
 import androidx.core.app.ActivityOptionsCompat
-import com.may.tmdb.movie.upcoming.detail.DetailActivity
+import com.may.tmdb.movie.detail.DetailActivity
 
 
 class UpcomingMovieActivity : AppCompatActivity() {

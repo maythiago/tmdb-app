@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name">TMDB</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_name">TMDB</string>>
+    <string name="no_overview_founded">Não temos uma sinopse em Português</string>
 </resources>

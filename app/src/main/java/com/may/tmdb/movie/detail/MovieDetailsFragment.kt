@@ -1,9 +1,10 @@
-package com.may.tmdb.movie.upcoming.detail
+package com.may.tmdb.movie.detail
 
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.*
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.may.tmdb.movie.MovieModel
@@ -13,18 +14,31 @@ import org.koin.android.ext.android.inject
 import timber.log.Timber
 import java.security.InvalidParameterException
 import android.widget.Toast
-import com.google.android.material.appbar.AppBarLayout
 import com.may.tmdb.R
 import kotlinx.android.synthetic.main.fragment_movie_detail.view.*
-import android.view.View.INVISIBLE
-import android.view.View.VISIBLE
 
 
 class MovieDetailsFragment : Fragment(), MovieDetails.View {
+    override fun setOverview(overview: String) {
+        tvMovieDetailOverview.text = overview
+    }
 
     override fun setTitle(title: String) {
         collapsingToolbar.title = title
         tvMovieDetailTitle.text = title
+    }
+
+    override fun showProgress() {
+        pbMovieDetailLoading.visibility = VISIBLE
+    }
+
+    override fun hideProgress() {
+        pbMovieDetailLoading.visibility = GONE
+
+    }
+
+    override fun setGenre(genre: String) {
+        tvMovieDetailCategory.text = genre
     }
 
 
@@ -49,6 +63,9 @@ class MovieDetailsFragment : Fragment(), MovieDetails.View {
         return view
     }
 
+    override fun setReleaseDate(releaseDate: String) {
+        tvMovieDetailReleaseDate.text = releaseDate
+    }
 
 
     override fun onStart() {
@@ -56,6 +73,10 @@ class MovieDetailsFragment : Fragment(), MovieDetails.View {
         mPresenter.subscribe(this)
         mPresenter.onStart(movie)
 
+    }
+
+    override fun showEmptyOverview() {
+        setOverview(getString(R.string.no_overview_founded))
     }
 
     override fun onStop() {
@@ -68,10 +89,6 @@ class MovieDetailsFragment : Fragment(), MovieDetails.View {
             .load(ivMovieDetailPoster.context, posterPath, ivMovieDetailPoster)
     }
 
-    override fun setBackdrop(thumbnailBackdropPath: String) {
-        PosterProvider.load(ivMovieDetailBackdrop.context, thumbnailBackdropPath, ivMovieDetailBackdrop)
-    }
-
     companion object {
         fun newInstance(movie: MovieModel): Fragment {
             val bundle = Bundle()
@@ -81,6 +98,7 @@ class MovieDetailsFragment : Fragment(), MovieDetails.View {
                     arguments = bundle
                 }
         }
+
         const val ARG_MOVIE_MODEL = "ARG_MOVIE_MODEL"
     }
 }

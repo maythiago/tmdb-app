@@ -19,11 +19,11 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".movie.upcoming.detail.DetailActivity"
+        <activity android:name=".movie.detail.DetailActivity"
                   android:parentActivityName=".UpcomingMovieActivity"
         android:theme="@style/AppTheme.DetailsActivity"/>
 
-        />
+
     </application>
 
 </manifest>

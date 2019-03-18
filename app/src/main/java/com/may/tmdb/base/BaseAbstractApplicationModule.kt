@@ -39,7 +39,8 @@ object BaseAbstractApplicationModule {
             val newUrl = oldUrl
                 .newBuilder()
                 .addQueryParameter("api_key", BuildConfig.TMDB_API_KEY)
-                .addQueryParameter("language", Locale.getDefault().language)
+                .addQueryParameter("language", "${Locale.getDefault().language}-${Locale.getDefault().country}")
+                .addQueryParameter("region", Locale.getDefault().country)
                 .build()
             request = request.newBuilder().url(newUrl).build()
             chain.proceed(request)

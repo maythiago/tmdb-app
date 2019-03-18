@@ -11,10 +11,10 @@ data class MovieModel(
     @SerializedName("release_date") val releaseDate: String,
     @SerializedName("id") val id: Int,
     @SerializedName("title") val title: String,
-    @SerializedName("backdrop_path") val backdropPath: String?,
+    @SerializedName("overview") val overview: String,
+    @SerializedName("genre_ids") val genresId: IntArray,
     var largePosterPath: String? = "",
-    var thumbnailPosterPath: String? = "",
-    var largeBackdropPath: String? = ""
+    var thumbnailPosterPath: String? = ""
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -22,7 +22,7 @@ data class MovieModel(
         parcel.readInt(),
         parcel.readString(),
         parcel.readString(),
-        parcel.readString(),
+        parcel.createIntArray(),
         parcel.readString(),
         parcel.readString()
     ) {
@@ -36,12 +36,6 @@ data class MovieModel(
             largePosterPath =
                 configuration.baseUrl + configuration.posterSizes.last { it.contains("^(w\\d{3})$".toRegex()) } + posterPath
         }
-        if (backdropPath != null) {
-            // everything enclosed of 'wXXX'
-            largeBackdropPath =
-                configuration.baseUrl + configuration.backdropSizes.last { it.contains("^(w\\d{3})$".toRegex()) } + backdropPath
-        }
-
         return this
     }
 
@@ -50,10 +44,10 @@ data class MovieModel(
         parcel.writeString(releaseDate)
         parcel.writeInt(id)
         parcel.writeString(title)
-        parcel.writeString(backdropPath)
+        parcel.writeString(overview)
+        parcel.writeIntArray(genresId)
         parcel.writeString(largePosterPath)
         parcel.writeString(thumbnailPosterPath)
-        parcel.writeString(largeBackdropPath)
     }
 
     override fun describeContents(): Int {
@@ -69,5 +63,4 @@ data class MovieModel(
             return arrayOfNulls(size)
         }
     }
-
 }

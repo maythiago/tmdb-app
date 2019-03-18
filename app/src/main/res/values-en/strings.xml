@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">TMDB</string>>
+    <string name="no_overview_founded">We do not have an  overview in English.</string>
+</resources>

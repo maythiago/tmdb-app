@@ -1,4 +1,4 @@
-package com.may.tmdb.movie.upcoming.detail
+package com.may.tmdb.movie.detail
 
 import android.content.Context
 import android.content.Intent

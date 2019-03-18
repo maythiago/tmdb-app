@@ -11,7 +11,17 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
         <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
                                                            android:layout_height="match_parent">
-
+            <TextView
+                    android:id="@+id/tvMovieDetailOverview"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    style="@style/TextAppearance.MaterialComponents.Body1"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_width="match_parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_margin="8dp"
+                    tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"
+                    android:layout_height="wrap_content"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
@@ -31,46 +41,87 @@
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
             <androidx.constraintlayout.widget.ConstraintLayout
                     app:layout_collapseMode="parallax"
+                    android:layout_marginTop="?actionBarSize"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-                <ImageView
-                        android:id="@+id/ivMovieDetailBackdrop"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:adjustViewBounds="true"
+                <ProgressBar
+                        android:id="@+id/pbMovieDetailLoading"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        android:src="@mipmap/ic_launcher"/>
+                        android:layout_marginTop="-7dp"
+                        android:layout_marginBottom="-7dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:indeterminate="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"/>
                 <ImageView
-                        app:layout_constraintTop_toBottomOf="@id/ivMovieDetailBackdrop"
                         android:id="@+id/ivMovieDetailPoster"
                         app:layout_constraintLeft_toLeftOf="parent"
                         android:layout_width="100dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:src="@drawable/poster_placeholder"
                         android:layout_height="wrap_content"
                         android:adjustViewBounds="true"
-                        android:layout_margin="8dp"
-                        android:src="@mipmap/ic_launcher"
+                        app:layout_constraintTop_toBottomOf="@id/pbMovieDetailLoading"
                         app:layout_constraintBottom_toBottomOf="parent"/>
+
                 <TextView
-                        android:layout_margin="8dp"
-                        android:layout_width="wrap_content"
-                        android:textSize="20dp"
+                        android:layout_width="0dp"
                         android:lines="1"
+                        android:ellipsize="end"
+                        android:textColor="@android:color/white"
+                        android:layout_marginLeft="8dp"
                         android:id="@+id/tvMovieDetailTitle"
+                        style="@style/TextAppearance.MaterialComponents.Headline6"
                         app:layout_constraintTop_toTopOf="@id/ivMovieDetailPoster"
-                        android:layout_height="wrap_content"
-                        style="@style/TextAppearance.AppCompat.Title.Inverse"
+                        app:layout_constraintBottom_toTopOf="@id/tvMovieDetailCategory"
                         app:layout_constraintLeft_toRightOf="@id/ivMovieDetailPoster"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_height="wrap_content"
                         tools:text="Bumblebee"
+                        app:layout_constraintVertical_chainStyle="packed"/>
+                <TextView
+                        android:layout_width="0dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:ellipsize="end"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        android:id="@+id/tvMovieDetailCategory"
+                        app:layout_constraintTop_toBottomOf="@id/tvMovieDetailTitle"
+                        app:layout_constraintBottom_toBottomOf="@id/ivMovieDetailPoster"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                        app:layout_constraintLeft_toLeftOf="@id/tvMovieDetailTitle"
+                        tools:text="Drama, Terror, Ação, comédia, Aventura"
+                />
+                <TextView
+                        android:layout_width="0dp"
+                        android:lines="1"
+                        android:ellipsize="end"
+                        android:id="@+id/tvMovieDetailReleaseDate"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvMovieDetailCategory"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:textColor="@android:color/white"
+                        style="@style/TextAppearance.MaterialComponents.Subtitle2"
+                        tools:text="13-12-2018"
                 />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
             <androidx.appcompat.widget.Toolbar
                     android:layout_width="match_parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
                     android:id="@+id/toolbar"
+                    app:layout_collapseMode="pin"
                     android:layout_height="?attr/actionBarSize"
-                    app:layout_collapseMode="pin"/>
+            />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
