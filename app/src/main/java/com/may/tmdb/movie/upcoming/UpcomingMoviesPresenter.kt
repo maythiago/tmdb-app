@@ -6,6 +6,7 @@ import com.may.tmdb.repository.network.NetworkRepository
 import com.may.tmdb.repository.SharedPreferenceRepository
 import io.reactivex.disposables.CompositeDisposable
 import retrofit2.HttpException
+import timber.log.Timber
 
 class UpcomingMoviesPresenter(
     val mSharedPreferenceRepository: SharedPreferenceRepository,
@@ -20,6 +21,7 @@ class UpcomingMoviesPresenter(
             mCompositeDisposable += mNetworkRepository
                 .getConfiguration()
                 .subscribe({ configuration ->
+                    mView?.showEmptyState()
                     mSharedPreferenceRepository.setConfiguration(configuration)
                     getUpcomingMovies()
                 }, { e ->
@@ -34,6 +36,7 @@ class UpcomingMoviesPresenter(
         val configuration = mSharedPreferenceRepository.getConfiguration()
         mCompositeDisposable += mNetworkRepository.getPagingUpcomingMovie(configuration!!)
             .subscribe({ result ->
+                Timber.i("showMovies=$result")
                 mView?.showMovies(result)
             }, { e ->
                 if (e is HttpException && e.code() == 404) {
@@ -42,6 +45,11 @@ class UpcomingMoviesPresenter(
                     mView?.showConfigurationError(e.message ?: "Ocorreu um erro inesperado")
                 }
             })
+    }
+
+    override fun onRefreshListener() {
+        mView?.showEmptyState()
+        mNetworkRepository.invalidateData()
     }
 
     override fun handleMovieClicked(movie: MovieModel) {

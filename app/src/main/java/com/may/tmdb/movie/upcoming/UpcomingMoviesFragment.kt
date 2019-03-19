@@ -34,6 +34,7 @@ class UpcomingMoviesFragment : Fragment(), UpcomingMovies.View {
     }
 
     override fun showMovies(results: PagedList<MovieModel>) {
+        srlUpcomingMovieRefresh.isRefreshing = false
         clUpcomingMoviesEmptyState.visibility = View.GONE
         mAdapter.submitList(results)
     }
@@ -58,6 +59,7 @@ class UpcomingMoviesFragment : Fragment(), UpcomingMovies.View {
         super.onViewCreated(view, savedInstanceState)
         rvUpcomingMovies.adapter = mAdapter
         mAdapter.setOnClickListener { mPresenter.handleMovieClicked(it) }
+        srlUpcomingMovieRefresh.setOnRefreshListener { mPresenter.onRefreshListener() }
         val columnCount = if (singleLine) {
             rvUpcomingMovies.addItemDecoration(
                 DividerItemDecoration(
@@ -70,6 +72,10 @@ class UpcomingMoviesFragment : Fragment(), UpcomingMovies.View {
             4
         }
         rvUpcomingMovies.layoutManager = GridLayoutManager(rvUpcomingMovies.context, columnCount)
+    }
+
+    override fun showEmptyState() {
+        clUpcomingMoviesEmptyState.visibility = View.VISIBLE
     }
 
     override fun onStart() {

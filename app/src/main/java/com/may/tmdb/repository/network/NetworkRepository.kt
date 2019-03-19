@@ -12,4 +12,5 @@ interface NetworkRepository {
 
     fun getUpcomingMovie(page:Int? = null): Single<PaginatedResponse<MovieModel>>
     fun getPagingUpcomingMovie(configurationModel: ConfigurationModel): Observable<PagedList<MovieModel>>
+    fun invalidateData()
 }

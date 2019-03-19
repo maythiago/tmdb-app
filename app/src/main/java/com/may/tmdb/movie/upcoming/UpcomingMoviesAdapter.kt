@@ -57,6 +57,7 @@ class UpcomingMoviesAdapter(val singleLine: Boolean) :
         const val GRID_VIEW = 1
         private val DIFF_CALLBACK = object :
             DiffUtil.ItemCallback<MovieModel>() {
+
             override fun areItemsTheSame(
                 oldConcert: MovieModel,
                 newConcert: MovieModel

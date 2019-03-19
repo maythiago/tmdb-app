@@ -10,6 +10,7 @@ object UpcomingMovies {
         fun removeAllMovies()
         fun showNotFoundServiceError()
         fun openMovieDetails(movie: MovieModel)
+        fun showEmptyState()
     }
 
     interface Presenter {
@@ -17,6 +18,7 @@ object UpcomingMovies {
         fun unsubscribe()
         fun onStart()
         fun handleMovieClicked(movie: MovieModel)
+        fun onRefreshListener()
     }
 
 }
