@@ -37,6 +37,7 @@ class UpcomingMoviesFragment : Fragment(), UpcomingMovies.View {
     }
 
     override fun showMovies(results: PagedList<MovieModel>) {
+        srlUpcomingMovieRefresh.isRefreshing = false
         clUpcomingMoviesEmptyState.visibility = View.GONE
         mAdapter.submitList(results)
     }
@@ -64,8 +65,9 @@ class UpcomingMoviesFragment : Fragment(), UpcomingMovies.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Timber.i("onViewCreated")
         rvUpcomingMovies.adapter = mAdapter
+        mAdapter.setOnClickListener { mPresenter.handleMovieClicked(it) }
+        srlUpcomingMovieRefresh.setOnRefreshListener { mPresenter.onRefreshListener() }
         mAdapter.setOnClickListener { position, movie ->
             mPresenter.handleMovieClicked(position, movie)
         }
@@ -80,7 +82,14 @@ class UpcomingMoviesFragment : Fragment(), UpcomingMovies.View {
         } else {
             GridLayoutManager(rvUpcomingMovies.context, 4)
         }
-        rvUpcomingMovies.layoutManager = layoutManager
+        rvUpcomingMovies.layoutManager = layoutManager    }
+
+    override fun showEmptyState() {
+        clUpcomingMoviesEmptyState.visibility = View.VISIBLE
+    }
+
+    override fun onStart() {
+        super.onStart()
         mPresenter.subscribe(this)
         mPresenter.onStart()
     }

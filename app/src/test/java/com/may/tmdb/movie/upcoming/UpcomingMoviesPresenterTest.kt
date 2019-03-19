@@ -137,4 +137,16 @@ class UpcomingMoviesPresenterTest {
         }
     }
 
+    @Test
+    fun `onRefresh call invalidate`() {
+
+        mPresenter.onRefreshListener()
+
+        verify(exactly = 1) {
+            mView.showEmptyState()
+            mNetworkRepository.invalidateData()
+        }
+    }
+
+
 }

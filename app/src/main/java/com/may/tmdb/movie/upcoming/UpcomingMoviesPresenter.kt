@@ -6,6 +6,7 @@ import com.may.tmdb.repository.network.NetworkRepository
 import com.may.tmdb.repository.SharedPreferenceRepository
 import io.reactivex.disposables.CompositeDisposable
 import retrofit2.HttpException
+import timber.log.Timber
 
 class UpcomingMoviesPresenter(
     val mSharedPreferenceRepository: SharedPreferenceRepository,
@@ -22,6 +23,7 @@ class UpcomingMoviesPresenter(
                 .doOnSubscribe { mView?.showProgress() }
                 .doOnTerminate { mView?.hideProgress() }
                 .subscribe({ configuration ->
+                    mView?.showEmptyState()
                     mSharedPreferenceRepository.setConfiguration(configuration)
                     getUpcomingMovies()
                 }, { e ->
@@ -34,22 +36,29 @@ class UpcomingMoviesPresenter(
 
     private fun getUpcomingMovies() {
         val configuration = mSharedPreferenceRepository.getConfiguration()
-        if (configuration != null) {
-            mCompositeDisposable += mNetworkRepository.getPagingUpcomingMovie(configuration)
-                .subscribe({ result ->
-                    mView?.showMovies(result)
-                }, { e ->
-                    if (e is HttpException && e.code() == 404) {
-                        mView?.showNotFoundServiceError()
-                    } else {
-                        mView?.showConfigurationError(e.message ?: "Ocorreu um erro inesperado")
-                    }
-                })
-        }
+        mCompositeDisposable += mNetworkRepository.getPagingUpcomingMovie(configuration!!)
+            .subscribe({ result ->
+                Timber.i("showMovies=$result")
+                mView?.showMovies(result)
+            }, { e ->
+                if (e is HttpException && e.code() == 404) {
+                    mView?.showNotFoundServiceError()
+                } else {
+                    mView?.showConfigurationError(e.message ?: "Ocorreu um erro inesperado")
+                }
+            })
     }
 
     override fun handleMovieClicked(position: Int, movie: MovieModel) {
         mView?.openMovieDetails(position, movie)
+    }
+    override fun onRefreshListener() {
+        mView?.showEmptyState()
+        mNetworkRepository.invalidateData()
+    }
+
+    override fun handleMovieClicked(movie: MovieModel) {
+        mView?.openMovieDetails(movie)
     }
 
     override fun subscribe(view: UpcomingMovies.View) {

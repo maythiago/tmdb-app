@@ -8,6 +8,8 @@ object UpcomingMovies {
         fun showConfigurationError(message: String)
         fun showMovies(results: PagedList<MovieModel>)
         fun showNotFoundServiceError()
+        fun openMovieDetails(movie: MovieModel)
+        fun showEmptyState()
         fun openMovieDetails(position: Int, movie: MovieModel)
         fun showProgress()
         fun hideProgress()
@@ -18,6 +20,8 @@ object UpcomingMovies {
         fun unsubscribe()
         fun onStart()
         fun handleMovieClicked(position: Int, movie: MovieModel)
+        fun handleMovieClicked(movie: MovieModel)
+        fun onRefreshListener()
     }
 
 }
