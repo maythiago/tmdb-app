@@ -28,12 +28,8 @@ class UpcomingMoviesFragment : Fragment(), UpcomingMovies.View {
     private val mAdapter by lazy { UpcomingMoviesAdapter(singleLine) }
     private val mPresenter: UpcomingMovies.Presenter by inject()
 
-    override fun showNotFoundServiceError() {
-        Toast.makeText(activity, "Ocorreu um erro ao sincronizar os filmes.", Toast.LENGTH_LONG).show()
-    }
-
-    override fun showConfigurationError(message: String) {
-        Toast.makeText(activity, message, Toast.LENGTH_LONG).show()
+    override fun showConfigurationError() {
+        Toast.makeText(activity, R.string.message_error_upcoming_movies, Toast.LENGTH_LONG).show()
     }
 
     override fun showMovies(results: PagedList<MovieModel>) {
@@ -66,7 +62,6 @@ class UpcomingMoviesFragment : Fragment(), UpcomingMovies.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rvUpcomingMovies.adapter = mAdapter
-        mAdapter.setOnClickListener { mPresenter.handleMovieClicked(it) }
         srlUpcomingMovieRefresh.setOnRefreshListener { mPresenter.onRefreshListener() }
         mAdapter.setOnClickListener { position, movie ->
             mPresenter.handleMovieClicked(position, movie)

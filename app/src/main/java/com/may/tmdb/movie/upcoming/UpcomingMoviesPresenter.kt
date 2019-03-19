@@ -27,7 +27,8 @@ class UpcomingMoviesPresenter(
                     mSharedPreferenceRepository.setConfiguration(configuration)
                     getUpcomingMovies()
                 }, { e ->
-                    mView?.showConfigurationError(e.message ?: "Ocorreu um erro inesperado")
+                    mView?.showConfigurationError()
+                    mView?.showEmptyState()
                 })
         } else {
             getUpcomingMovies()
@@ -36,29 +37,24 @@ class UpcomingMoviesPresenter(
 
     private fun getUpcomingMovies() {
         val configuration = mSharedPreferenceRepository.getConfiguration()
-        mCompositeDisposable += mNetworkRepository.getPagingUpcomingMovie(configuration!!)
-            .subscribe({ result ->
-                Timber.i("showMovies=$result")
-                mView?.showMovies(result)
-            }, { e ->
-                if (e is HttpException && e.code() == 404) {
-                    mView?.showNotFoundServiceError()
-                } else {
-                    mView?.showConfigurationError(e.message ?: "Ocorreu um erro inesperado")
-                }
-            })
+        if (configuration != null) {
+            mCompositeDisposable += mNetworkRepository.getPagingUpcomingMovie(configuration!!)
+                .subscribe({ result ->
+                    Timber.i("showMovies=$result")
+                    mView?.showMovies(result)
+                }, { e ->
+                    mView?.showConfigurationError()
+                })
+        }
     }
 
     override fun handleMovieClicked(position: Int, movie: MovieModel) {
         mView?.openMovieDetails(position, movie)
     }
-    override fun onRefreshListener() {
-        mView?.showEmptyState()
-        mNetworkRepository.invalidateData()
-    }
 
-    override fun handleMovieClicked(movie: MovieModel) {
-        mView?.openMovieDetails(movie)
+    override fun onRefreshListener() {
+//        mView?.showEmptyState()
+        mNetworkRepository.invalidateData()
     }
 
     override fun subscribe(view: UpcomingMovies.View) {

@@ -4,6 +4,18 @@
              xmlns:app="http://schemas.android.com/apk/res-auto"
              android:layout_width="match_parent" android:layout_height="match_parent"
              tools:context="com.may.tmdb.movie.upcoming.UpcomingMoviesFragment">
+    <ProgressBar
+            android:id="@+id/pbUpcomingMoviesLoading"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="-7dp"
+            android:visibility="invisible"
+            android:layout_marginBottom="-7dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:indeterminate="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"/>
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/srlUpcomingMovieRefresh"
             android:layout_width="match_parent"

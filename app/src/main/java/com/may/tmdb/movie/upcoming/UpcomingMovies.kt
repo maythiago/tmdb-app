@@ -5,10 +5,8 @@ import com.may.tmdb.movie.MovieModel
 
 object UpcomingMovies {
     interface View {
-        fun showConfigurationError(message: String)
+        fun showConfigurationError()
         fun showMovies(results: PagedList<MovieModel>)
-        fun showNotFoundServiceError()
-        fun openMovieDetails(movie: MovieModel)
         fun showEmptyState()
         fun openMovieDetails(position: Int, movie: MovieModel)
         fun showProgress()
@@ -20,7 +18,6 @@ object UpcomingMovies {
         fun unsubscribe()
         fun onStart()
         fun handleMovieClicked(position: Int, movie: MovieModel)
-        fun handleMovieClicked(movie: MovieModel)
         fun onRefreshListener()
     }
 

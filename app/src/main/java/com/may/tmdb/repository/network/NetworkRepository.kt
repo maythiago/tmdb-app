@@ -10,14 +10,8 @@ import io.reactivex.Single
 
 interface NetworkRepository {
     fun getConfiguration(): Single<ConfigurationModel>
-
     fun getUpcomingMovie(page: Int? = null): Single<PaginatedResponse<MovieModel>>
-    fun getPagingUpcomingMovie(
-        configurationModel: ConfigurationModel
-    ): Observable<PagedList<MovieModel>>
-
     fun getGenres(): Single<GenreResponseModel>
-    fun getUpcomingMovie(page:Int? = null): Single<PaginatedResponse<MovieModel>>
     fun getPagingUpcomingMovie(configurationModel: ConfigurationModel): Observable<PagedList<MovieModel>>
     fun invalidateData()
 }
