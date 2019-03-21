@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.may.tmdb.FullScreenActivity
 import com.may.tmdb.R
 import com.may.tmdb.movie.MovieModel
 
@@ -18,7 +19,6 @@ class DetailActivity : AppCompatActivity() {
             val movie = intent.extras.getParcelable<MovieModel>(EXTRA_MOVIE_DETAIL)
             goToFragment(MovieDetailsFragment.newInstance(movie))
         }
-        supportActionBar
     }
 
     fun goToFragment(fragment: Fragment) {
@@ -39,6 +39,11 @@ class DetailActivity : AppCompatActivity() {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    fun openFullScreenImage(posterUrl: String) {
+        val fullScreenActivity = FullScreenActivity.startIntent(this, posterUrl)
+        startActivity(fullScreenActivity)
     }
 
     companion object {

@@ -30,7 +30,7 @@ val networkRepositoryModule = module {
         BaseAbstractApplicationModule.provideRetrofitBuilder(get())
     }
     single {
-        BaseAbstractApplicationModule.provideRetrofit(get(), get())
+        BaseAbstractApplicationModule.provideRetrofit(get(), get(), androidContext())
     }
     single<NetworkRepository> { NetworkRepositoryImpl(get(), get()) }
 }

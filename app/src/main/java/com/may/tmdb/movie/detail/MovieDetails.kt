@@ -12,6 +12,7 @@ object MovieDetails {
         fun setReleaseDate(releaseDate: String)
         fun setOverview(overview: String)
         fun showEmptyOverview()
+        fun openPosterFullScreen(posterUrl: String)
 
     }
 
@@ -19,6 +20,7 @@ object MovieDetails {
         fun subscribe(view: View)
         fun unsubscribe()
         fun onStart(movie: MovieModel)
+        fun onPosterClicked(movie: MovieModel)
 
     }
 }

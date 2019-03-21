@@ -5,7 +5,6 @@ import com.may.tmdb.movie.MovieModel
 import com.may.tmdb.repository.network.NetworkRepository
 import com.may.tmdb.repository.SharedPreferenceRepository
 import io.reactivex.disposables.CompositeDisposable
-import retrofit2.HttpException
 import timber.log.Timber
 
 class UpcomingMoviesPresenter(
@@ -27,6 +26,7 @@ class UpcomingMoviesPresenter(
                     mSharedPreferenceRepository.setConfiguration(configuration)
                     getUpcomingMovies()
                 }, { e ->
+                    Timber.e(e)
                     mView?.showConfigurationError()
                     mView?.showEmptyState()
                 })
@@ -38,7 +38,7 @@ class UpcomingMoviesPresenter(
     private fun getUpcomingMovies() {
         val configuration = mSharedPreferenceRepository.getConfiguration()
         if (configuration != null) {
-            mCompositeDisposable += mNetworkRepository.getPagingUpcomingMovie(configuration!!)
+            mCompositeDisposable += mNetworkRepository.getPagingUpcomingMovie(configuration)
                 .subscribe({ result ->
                     Timber.i("showMovies=$result")
                     mView?.showMovies(result)
@@ -53,7 +53,6 @@ class UpcomingMoviesPresenter(
     }
 
     override fun onRefreshListener() {
-//        mView?.showEmptyState()
         mNetworkRepository.invalidateData()
     }
 

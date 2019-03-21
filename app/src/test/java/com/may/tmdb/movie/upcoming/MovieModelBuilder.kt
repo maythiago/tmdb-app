@@ -30,6 +30,11 @@ class MovieModelBuilder {
         return this
     }
 
+    fun largePosterPath(url: String): MovieModelBuilder {
+        mLargePosterPath = url
+        return this
+    }
+
     fun title(title: String): MovieModelBuilder {
         mTitle = title
         return this

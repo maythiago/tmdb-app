@@ -24,8 +24,8 @@ class PageKeyedMovieDataSource(
                             it.withConfiguration(configuration!!.images)
                         }
                     callback.onResult(movies, null, 2)
-                },
-                { e -> })
+                }, Timber::e
+            )
 
     }
 
@@ -54,8 +54,8 @@ class PageKeyedMovieDataSource(
                             it.withConfiguration(configuration!!.images)
                         }
                     callback.onResult(movies, nextPosition)
-                },
-                { e -> })
+                }, Timber::e
+            )
     }
 
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, MovieModel>) {

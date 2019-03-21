@@ -21,8 +21,11 @@
         </activity>
         <activity android:name=".movie.detail.DetailActivity"
                   android:parentActivityName=".UpcomingMovieActivity"
-        android:theme="@style/AppTheme.DetailsActivity"/>
-
+                  android:theme="@style/AppTheme.DetailsActivity"/>
+        <activity android:name=".FullScreenActivity"
+                  android:theme="@style/AppTheme.FullScreen"
+                  android:parentActivityName=".movie.detail.DetailActivity"
+                  android:screenOrientation="portrait"/>
 
     </application>
 

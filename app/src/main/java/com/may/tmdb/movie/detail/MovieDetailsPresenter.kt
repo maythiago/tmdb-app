@@ -9,6 +9,13 @@ import com.may.tmdb.extensions.CompositeDisposableExtension.plusAssign
 class
 MovieDetailsPresenter(val mNetworkRepositoryImpl: NetworkRepository) :
     MovieDetails.Presenter {
+    override fun onPosterClicked(movie: MovieModel) {
+        val posterUrl = movie.largePosterPath
+        if (!posterUrl.isNullOrBlank()) {
+            mView?.openPosterFullScreen(posterUrl)
+        }
+    }
+
     var mView: MovieDetails.View? = null
     val compositeDisposable = CompositeDisposable()
     override fun onStart(movie: MovieModel) {

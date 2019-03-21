@@ -34,7 +34,7 @@ class NetworkRepositoryImpl(val repository: Retrofit, val cache: Cache) : Networ
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-     override fun getPagingUpcomingMovie(configurationModel: ConfigurationModel): Observable<PagedList<MovieModel>> {
+    override fun getPagingUpcomingMovie(configurationModel: ConfigurationModel): Observable<PagedList<MovieModel>> {
         dataSourceFactory = MovieModelDataSourceFactory(this, configurationModel)
         return RxPagedListBuilder(dataSourceFactory, MAX_PAGE)
             .buildObservable()

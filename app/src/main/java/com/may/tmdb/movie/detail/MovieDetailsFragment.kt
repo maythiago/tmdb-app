@@ -54,13 +54,18 @@ class MovieDetailsFragment : Fragment(), MovieDetails.View {
             view.ivMovieDetailPoster.setTransitionName("moviePoster");
         }
         view.ivMovieDetailPoster.setOnClickListener {
-            Toast.makeText(activity, "Teste", Toast.LENGTH_LONG).show()
+            mPresenter.onPosterClicked(movie)
         }
 
         val detailActivity = activity as DetailActivity
         detailActivity.setSupportActionBar(view.toolbar)
         detailActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         return view
+    }
+
+    override fun openPosterFullScreen(posterUrl: String) {
+        val detailActivity = activity as DetailActivity
+        detailActivity.openFullScreenImage(posterUrl)
     }
 
     override fun setReleaseDate(releaseDate: String) {

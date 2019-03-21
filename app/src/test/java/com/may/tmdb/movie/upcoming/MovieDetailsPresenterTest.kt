@@ -120,6 +120,7 @@ class MovieDetailsPresenterTest {
             mView.setOverview(overview)
         }
     }
+
     @Test
     fun `when onStart then load and show empty overview`() {
         val movie = MovieModelBuilder()
@@ -131,6 +132,35 @@ class MovieDetailsPresenterTest {
         // only calls showTitle
         verify(exactly = 1) {
             mView.showEmptyOverview()
+        }
+    }
+
+    @Test
+    fun `when onPosterClicked then open activity when largePosterUrl exist`() {
+        val posterUrl = "http://google.com"
+        val movie = MovieModelBuilder()
+            .largePosterPath(posterUrl)
+            .build()
+
+        mPresenter.onPosterClicked(movie)
+
+        // only calls showTitle
+        verify(exactly = 1) {
+            mView.openPosterFullScreen(posterUrl)
+        }
+    }
+
+    @Test
+    fun `when onPosterClicked then do nothing when largePosterUrl does not exist`() {
+        val movie = MovieModelBuilder()
+            .largePosterPath("")
+            .build()
+
+        mPresenter.onPosterClicked(movie)
+
+        // only calls showTitle
+        verify {
+            mView wasNot Called
         }
     }
 }

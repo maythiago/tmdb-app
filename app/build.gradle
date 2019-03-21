@@ -5,19 +5,28 @@ apply from: '../dependencies.gradle'
 apply plugin: 'kotlin-kapt'
 
 android {
+    signingConfigs {
+        release {
+            Properties properties = new Properties()
+            properties.load(project.rootProject.file('local.properties').newDataInputStream())
+            keyAlias properties.getProperty('KEY_ALIAS')
+            keyPassword properties.getProperty('KEY_PASSWORD')
+            storeFile file(properties.getProperty('KEYSTORE_PATH'))
+            storePassword properties.getProperty('STORE_PASSWORD')
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.may.tmdb"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode 4
+        versionName "1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "TMDB_API_KEY", "\"cae511dbcd627644a2fb8adae93eb035\"")
-        buildConfigField("String", "TMDB_API_BASE_URL", "\"https://api.themoviedb.org/3/\"")
     }
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
                     'proguard-rules.pro',
