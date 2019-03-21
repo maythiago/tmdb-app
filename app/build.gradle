@@ -1,0 +1,61 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply from: '../dependencies.gradle'
+apply plugin: 'kotlin-kapt'
+
+android {
+    signingConfigs {
+        release {
+            Properties properties = new Properties()
+            properties.load(project.rootProject.file('local.properties').newDataInputStream())
+            keyAlias properties.getProperty('KEY_ALIAS')
+            keyPassword properties.getProperty('KEY_PASSWORD')
+            storeFile file(properties.getProperty('KEYSTORE_PATH'))
+            storePassword properties.getProperty('STORE_PASSWORD')
+        }
+    }
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.may.tmdb"
+        minSdkVersion 16
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+                    'proguard-rules.pro',
+                    'proguard-rules-gson.pro',
+                    'proguard-rules-glide.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation timber
+    implementation pagingComponent
+    testImplementation pagingTest
+    implementation design
+    implementation koin
+    implementation gson
+    releaseImplementation leakCanaryNoOp
+    debugImplementation leakCanary
+    testImplementation junit
+    testImplementation mockk
+    implementation rxJava
+    implementation retrofit
+    implementation recyclerView
+    implementation glide
+    kapt glideCompiler
+    implementation kotlin
+    implementation supportLegacyV4
+
+    implementation appCompat
+    implementation constraintLayout
+}

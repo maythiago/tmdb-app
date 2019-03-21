@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">TMDB</string>>
+    <string name="no_overview_founded">Não temos uma sinopse em Português</string>
+    <string name="overview">Sinópse</string>
+    <string name="message_error_upcoming_movies">Something strange happened when fetching a movie list</string>
+</resources>

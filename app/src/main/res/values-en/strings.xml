@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">TMDB</string>>
+    <string name="no_overview_founded">We do not have an  overview in English.</string>
+    <string name="overview">Overview</string>
+    <string name="message_error_upcoming_movies">Algo estranho aconteceu ao buscar uma lista de filmes</string>
+</resources>
